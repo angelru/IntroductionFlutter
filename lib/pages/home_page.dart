@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
   Widget _menu() {
     return FutureBuilder(
       future: menuProvider.loadDataAsync(),
-      initialData: [],
+      initialData: const [],
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
         return ListView(
           children: _createItems(snapshot.data, context),
@@ -35,7 +35,7 @@ class HomePage extends StatelessWidget {
       final temp = ListTile(
         title: Text(item['texto']),
         leading: getIcon(item['icon']),
-        trailing: Icon(Icons.keyboard_arrow_right, color: Colors.blue),
+        trailing: const Icon(Icons.keyboard_arrow_right, color: Colors.blue),
         onTap: () {
           Navigator.pushNamed(context, item['ruta']);
         },
@@ -43,7 +43,7 @@ class HomePage extends StatelessWidget {
 
       options
         ..add(temp)
-        ..add(Divider());
+        ..add(const Divider());
     });
 
     return options;

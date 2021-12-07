@@ -72,5 +72,7 @@ class _InputPageState extends State<InputPage> {
     );
   }
 
-  Widget _createDate() {}
+  Widget _createDate() {
+    return widget;
+  }
 }

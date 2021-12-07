@@ -12,6 +12,9 @@ class _InputPageState extends State<InputPage> {
   String? _email;
   String? _date;
 
+  final TextEditingController _inputFieldDateController =
+      TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,9 +28,9 @@ class _InputPageState extends State<InputPage> {
           const Divider(),
           _createEmail(),
           const Divider(),
-          _createDate(),
-          const Divider(),
           _createPerson(),
+          const Divider(),
+          _createDate(context)
         ],
       ),
     );
@@ -72,11 +75,36 @@ class _InputPageState extends State<InputPage> {
     );
   }
 
-  Widget _createDate() {
-    return DatePickerDialog(
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now(),
+  Widget _createDate(BuildContext context) {
+    return TextField(
+      enableInteractiveSelection: false,
+      controller: _inputFieldDateController,
+      decoration: InputDecoration(
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+          hintText: 'Fecha',
+          labelText: 'Fecha',
+          suffixIcon: const Icon(Icons.perm_contact_calendar),
+          icon: const Icon(Icons.calendar_today)),
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+        _selectDate(context);
+      },
     );
+  }
+
+  void _selectDate(BuildContext context) async {
+    DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2018),
+        lastDate: DateTime(2025),
+        locale: const Locale('es', 'ES'));
+
+    if (picked != null) {
+      setState(() {
+        _date = picked.toString();
+        _inputFieldDateController.text = _date!;
+      });
+    }
   }
 }

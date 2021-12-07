@@ -73,6 +73,10 @@ class _InputPageState extends State<InputPage> {
   }
 
   Widget _createDate() {
-    return widget;
+    return DatePickerDialog(
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now(),
+    );
   }
 }

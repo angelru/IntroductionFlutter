@@ -11,6 +11,7 @@ class _InputPageState extends State<InputPage> {
   String? _nombre;
   String? _email;
   String? _date;
+  String? _poder;
 
   final TextEditingController _inputFieldDateController =
       TextEditingController();
@@ -28,9 +29,11 @@ class _InputPageState extends State<InputPage> {
           const Divider(),
           _createEmail(),
           const Divider(),
-          _createPerson(),
+          _createDate(context),
           const Divider(),
-          _createDate(context)
+          _createDropdown(),
+          const Divider(),
+          _createPerson(),
         ],
       ),
     );
@@ -55,6 +58,7 @@ class _InputPageState extends State<InputPage> {
     return ListTile(
       title: Text('El nombre es  $_nombre'),
       subtitle: Text('El correo es  $_email'),
+      leading: Text('El poder es $_poder'),
     );
   }
 
@@ -106,5 +110,23 @@ class _InputPageState extends State<InputPage> {
         _inputFieldDateController.text = _date!;
       });
     }
+  }
+
+  final List<DropdownMenuItem<String>> getPoderes = [
+    const DropdownMenuItem(child: Text('Poder'), value: 'Poder'),
+    const DropdownMenuItem(child: Text('Volar'), value: 'Volar'),
+    const DropdownMenuItem(child: Text('Rayos X'), value: 'Rayos X'),
+  ];
+
+  Widget _createDropdown() {
+    return DropdownButton<String>(
+      value: _poder,
+      items: getPoderes,
+      onChanged: (value) {
+        setState(() {
+          _poder = value;
+        });
+      },
+    );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:componentes_flutter/pages/listview_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:componentes_flutter/pages/alert_page.dart';
@@ -17,6 +18,7 @@ Map<String, WidgetBuilder> getApplicationRoutes() {
     'animatedContainer': (BuildContext context) =>
         const AnimatedContainerPage(),
     'inputs': (BuildContext context) => const InputPage(),
-    'slider': (BuildContext context) => const SliderPage()
+    'slider': (BuildContext context) => const SliderPage(),
+    'list': (BuildContext context) => const ListPage()
   };
 }

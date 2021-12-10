@@ -58,12 +58,12 @@ class _ListPageState extends State<ListPage> {
           itemBuilder: (BuildContext context, int index) {
             final image = _numbers[index];
             return FadeInImage(
-                height: 300.0,
-                width: 500.0,
-                fit: BoxFit.cover,
-                image:
-                    NetworkImage('https://picsum.photos/500/300?image=$image'),
-                placeholder: AssetImage('assets/jar-loading.gif'));
+              image: NetworkImage('https://picsum.photos/500/300?image=$image'),
+              placeholder: const AssetImage('assets/jar-loading.gif'),
+              height: 300.0,
+              width: 500.0,
+              fit: BoxFit.cover,
+            );
           }),
     );
   }

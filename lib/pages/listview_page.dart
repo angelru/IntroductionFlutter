@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class ListPage extends StatefulWidget {
@@ -12,6 +14,7 @@ class _ListPageState extends State<ListPage> {
 
   final List<int> _numbers = [];
   int number = 0;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -21,19 +24,29 @@ class _ListPageState extends State<ListPage> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        _loadMoreItems();
+        fetchData();
       }
     });
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('ListView'),
-      ),
-      body: _createList(),
-    );
+        appBar: AppBar(
+          title: const Text('ListView'),
+        ),
+        body: Stack(
+          children: <Widget>[
+            _createList(),
+            _createLoading(),
+          ],
+        ));
   }
 
   Widget _createList() {
@@ -43,6 +56,9 @@ class _ListPageState extends State<ListPage> {
         itemBuilder: (BuildContext context, int index) {
           final image = _numbers[index];
           return FadeInImage(
+              height: 300.0,
+              width: 500.0,
+              fit: BoxFit.cover,
               image: NetworkImage('https://picsum.photos/500/300?image=$image'),
               placeholder: AssetImage('assets/jar-loading.gif'));
         });
@@ -53,5 +69,37 @@ class _ListPageState extends State<ListPage> {
       _numbers.add(number++);
     }
     setState(() {});
+  }
+
+  Future<void> fetchData() async {
+    _isLoading = true;
+
+    setState(() {});
+    Timer(const Duration(seconds: 2), responseHttp);
+  }
+
+  void responseHttp() {
+    _isLoading = false;
+    _loadMoreItems();
+  }
+
+  Widget _createLoading() {
+    if (_isLoading) {
+      return Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const <Widget>[CircularProgressIndicator()],
+          ),
+          const SizedBox(
+            height: 15.0,
+          )
+        ],
+      );
+    }
+
+    return Container();
   }
 }

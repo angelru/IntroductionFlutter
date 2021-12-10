@@ -13,7 +13,7 @@ class _ListPageState extends State<ListPage> {
   ScrollController _scrollController = new ScrollController();
 
   final List<int> _numbers = [];
-  int number = 0;
+  int _number = 0;
   bool _isLoading = false;
 
   @override
@@ -50,23 +50,27 @@ class _ListPageState extends State<ListPage> {
   }
 
   Widget _createList() {
-    return ListView.builder(
-        controller: _scrollController,
-        itemCount: _numbers.length,
-        itemBuilder: (BuildContext context, int index) {
-          final image = _numbers[index];
-          return FadeInImage(
-              height: 300.0,
-              width: 500.0,
-              fit: BoxFit.cover,
-              image: NetworkImage('https://picsum.photos/500/300?image=$image'),
-              placeholder: AssetImage('assets/jar-loading.gif'));
-        });
+    return RefreshIndicator(
+      onRefresh: _refreshData,
+      child: ListView.builder(
+          controller: _scrollController,
+          itemCount: _numbers.length,
+          itemBuilder: (BuildContext context, int index) {
+            final image = _numbers[index];
+            return FadeInImage(
+                height: 300.0,
+                width: 500.0,
+                fit: BoxFit.cover,
+                image:
+                    NetworkImage('https://picsum.photos/500/300?image=$image'),
+                placeholder: AssetImage('assets/jar-loading.gif'));
+          }),
+    );
   }
 
   void _loadMoreItems() {
     for (var i = 1; i < 10; i++) {
-      _numbers.add(number++);
+      _numbers.add(_number++);
     }
     setState(() {});
   }
@@ -101,5 +105,13 @@ class _ListPageState extends State<ListPage> {
     }
 
     return Container();
+  }
+
+  Future<void> _refreshData() async {
+    await Future.delayed(const Duration(seconds: 2));
+
+    _numbers.clear();
+    _number++;
+    _loadMoreItems();
   }
 }
